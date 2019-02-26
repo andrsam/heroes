@@ -7,21 +7,26 @@ import java.awt.image.BufferedImage;
 import java.util.Scanner;
 
 /**
- * Основной классс игры.
+ * Основной класс игры.
  */
 @Slf4j
 public class Game {
     private Engine engine = new Engine();
 
-    public void start() {
+    /**
+     * Выводит заставку и информацию об игроках.
+     */
+    public void showInfo() {
         drawIntro();
         log.info("Играют {} против {}", engine.getSquadGood().getRaceName(), engine.getSquadEvil().getRaceNameGenitive());
         System.out.println("-----------------------------------------------------------------");
         System.out.println("Enter - следующий ход, x - закончить игру: ");
     }
 
+    /**
+     * Выводит заставку.
+     */
     private void drawIntro() {
-        System.out.println("#################################################################");
         int width = 100;
         int height = 30;
 
@@ -45,9 +50,12 @@ public class Game {
             }
             System.out.println(sb);
         }
-        System.out.println("#################################################################\n");
+        System.out.println("\n");
     }
 
+    /**
+     * Игровой цикл.
+     */
     private void loop() {
         Scanner scanner = new Scanner(System.in);
         while (!scanner.nextLine().equals("x")) {
@@ -59,7 +67,7 @@ public class Game {
 
     public static void main(String[] args) {
         Game game = new Game();
-        game.start();
+        game.showInfo();
         game.loop();
     }
 }
