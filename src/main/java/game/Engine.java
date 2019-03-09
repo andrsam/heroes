@@ -1,32 +1,42 @@
 package game;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import model.Squad;
-import model.actions.Improvement;
+import model.action.actions.Improvement;
 import model.race.Race;
 import model.race.RaceType;
-import model.race.races.*;
+import model.race.descriptions.Elves;
+import model.race.descriptions.Humans;
+import model.race.descriptions.Orcs;
+import model.race.descriptions.Undead;
 import model.unit.Unit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
 /**
  * Игровой движок.
  */
-@Getter
-@Setter
-@Slf4j
 public class Engine {
-    private Squad squadGood;
-    private Squad squadEvil;
-    private Random random = new Random();
+    private static final Logger log = LoggerFactory.getLogger(Engine.class);
+
+    private final Squad squadGood;
+    private final Squad squadEvil;
+    private final Random random = new Random();
+
     private int turnNumber = 1;
 
     public Engine() {
         squadGood = new Squad(getRandomRace(RaceType.GOOD));
         squadEvil = new Squad(getRandomRace(RaceType.EVIL));
+    }
+
+    public Squad getSquadGood() {
+        return squadGood;
+    }
+
+    public Squad getSquadEvil() {
+        return squadEvil;
     }
 
     /**
@@ -54,7 +64,8 @@ public class Engine {
     }
 
     /**
-     * Возвращает массив из атакующего юнита, и атакуемого юнита.
+     * Возвращает массив из атакующего юнита и атакуемого юнита
+     * для выполнения хода
      *
      * @return массив [атакующий юнит, атакуемый юнит]
      */
@@ -65,12 +76,13 @@ public class Engine {
         int src = random.nextInt(2);
         Unit srcUnit = squads[src].getActiveUnit();
 
-        /**
+        /*
          *  выбираем отряд назначения.
          *  это своя раса, если выбрано улучшение,
          *  иначе - раса противника
          */
         boolean isImprovement = srcUnit.getCurrentAction() instanceof Improvement;
+
         int dst = isImprovement ? src : src ^ 1;
         Unit dstUnit = squads[dst].getRandomUnit();
 

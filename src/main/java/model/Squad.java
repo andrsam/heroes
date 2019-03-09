@@ -1,7 +1,5 @@
 package model;
 
-import lombok.Getter;
-import lombok.Setter;
 import model.race.Race;
 import model.unit.Unit;
 
@@ -14,23 +12,46 @@ import java.util.stream.IntStream;
 /**
  * Описывает отряд.
  */
-@Getter
-@Setter
 public class Squad {
-    private List<Unit> units = new ArrayList<>();
+    /**
+     * Список юнитов, входящих в отряд.
+     */
+    private final List<Unit> units = new ArrayList<>();
 
+    /**
+     * Количество магов в отряде.
+     */
     public final int MAGE_COUNT = 1;
+
+    /**
+     * Количество лучников в отряде.
+     */
     public final int SHOOTER_COUNT = 3;
+
+    /**
+     * Количество воинов в отряде.
+     */
     public final int WARRIOR_COUNT = 4;
 
-    private Race race;
+    /**
+     * Раса, к которой относится отряд.
+     */
+    private final Race race;
+
+    public List<Unit> getUnits() {
+        return units;
+    }
+
+    public final Race getRace() {
+        return race;
+    }
 
     public Squad(Race race) {
         this.race = race;
 
         IntStream.rangeClosed(1, MAGE_COUNT).forEach(i -> units.add(new Unit(race.getMage())));
         IntStream.rangeClosed(1, SHOOTER_COUNT).forEach(i -> units.add(new Unit(race.getShooter())));
-        IntStream.rangeClosed(1, WARRIOR_COUNT).forEach(i ->  units.add(new Unit(race.getWarrior())));
+        IntStream.rangeClosed(1, WARRIOR_COUNT).forEach(i -> units.add(new Unit(race.getWarrior())));
     }
 
     /**
@@ -83,5 +104,15 @@ public class Squad {
      */
     public String getRaceNameGenitive() {
         return this.getRace().getNameGenitive();
+    }
+
+    @Override
+    public String toString() {
+        return "Squad{" +
+                ", MAGE_COUNT=" + MAGE_COUNT +
+                ", SHOOTER_COUNT=" + SHOOTER_COUNT +
+                ", WARRIOR_COUNT=" + WARRIOR_COUNT +
+                ", race=" + race +
+                '}';
     }
 }

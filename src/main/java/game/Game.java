@@ -1,6 +1,7 @@
 package game;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,9 +10,9 @@ import java.util.Scanner;
 /**
  * Основной класс игры.
  */
-@Slf4j
 public class Game {
-    private Engine engine = new Engine();
+    private final Engine engine = new Engine();
+    private static final Logger log = LoggerFactory.getLogger(Game.class);
 
     /**
      * Выводит заставку и информацию об игроках.
@@ -24,7 +25,7 @@ public class Game {
     }
 
     /**
-     * Выводит заставку.
+     * Выводит экранную заставку.
      */
     private void drawIntro() {
         int width = 100;

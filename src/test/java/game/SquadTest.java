@@ -1,7 +1,7 @@
 package game;
 
 import model.Squad;
-import model.race.races.Elves;
+import model.race.descriptions.Elves;
 import model.unit.Unit;
 import model.unit.UnitType;
 import org.junit.Test;
@@ -30,9 +30,9 @@ public class SquadTest {
     /**
      * Получает количество юнитов заданного типа.
      *
-     * @param units
-     * @param unitType
-     * @return
+     * @param units массив юнитов
+     * @param unitType тип юнитов
+     * @return количество юнитов заданного типа
      */
     private long getUnitTypeCount(List<Unit> units, UnitType unitType) {
         return units.stream().filter(e -> e.getUnitType().equals(unitType)).count();

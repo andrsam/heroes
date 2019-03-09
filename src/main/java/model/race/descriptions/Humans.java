@@ -1,7 +1,8 @@
-package model.race.races;
+package model.race.descriptions;
 
-import model.actions.Attack;
-import model.actions.Improvement;
+
+import model.action.actions.Attack;
+import model.action.actions.Improvement;
 import model.race.Race;
 
 /**

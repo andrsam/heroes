@@ -1,11 +1,8 @@
 package model.unit;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import model.actions.Action;
-import model.actions.ActionProxy;
-import model.actions.Improvement;
+import model.action.Action;
+import model.action.ActionProxy;
+import model.action.actions.Improvement;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,9 +12,6 @@ import java.util.Random;
 /**
  * Класс-описание персонажа.
  */
-@Getter
-@Setter
-@NoArgsConstructor
 public class Unit {
     /**
      * Тип персонажа (маг, лучник, воин)
@@ -50,9 +44,73 @@ public class Unit {
     private Action currentAction;
 
     /**
-     * Магия.
+     * Улучшение(проклятие), наложенные на персонаж.
      */
     private Action magic;
+
+    /**
+     * Улучшение, ранее наложенное на персонаж.
+     */
+    private Action prevImprovement;
+
+    /**
+     * Устанавливает улучшение, запоминая старое.
+     *
+     * @param action накладываемое улучшение
+     */
+    public void setImprovement(Action action) {
+        if (this.getMagic() != null) {
+            prevImprovement = this.getMagic();
+        }
+        this.setMagic(action);
+    }
+
+    /**
+     * Восстанавливает ранее снятое улучшение.
+     */
+    public void restoreMagic() {
+        this.setMagic(prevImprovement);
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNameGenitive() {
+        return nameGenitive;
+    }
+
+    public void setNameGenitive(String nameGenitive) {
+        this.nameGenitive = nameGenitive;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
+    }
+
+    public Action getMagic() {
+        return magic;
+    }
+
+    public void setMagic(Action magic) {
+        this.magic = magic;
+    }
+
+    public List<Action> getActions() {
+        return actions;
+    }
 
     public Unit(UnitType unitType) {
         this.unitType = unitType;
@@ -80,8 +138,16 @@ public class Unit {
         Collections.addAll(this.actions, actions);
     }
 
+    public void setCurrentAction(Action currentAction) {
+        this.currentAction = currentAction;
+    }
+
+    public Action getCurrentAction() {
+        return currentAction;
+    }
+
     public void setCurrentAction() {
-        this.currentAction = actions.size() == 1 ? actions.get(0) : actions.get(new Random().nextInt(actions.size()));
+        this.currentAction = actions.get(new Random().nextInt(actions.size()));
     }
 
     /**
@@ -97,9 +163,9 @@ public class Unit {
     }
 
     /**
-     * Прооверяет, наложена ли магия на воина или нет.
+     * Прооверяет, находится ли юнит в привелегированной группе
      *
-     * @return true, если на воина наложена магия
+     * @return true, если юнит в привелегированной группе
      */
     public boolean isPrivileged() {
         return magic != null && magic.getClass() == Improvement.class;

@@ -1,7 +1,7 @@
-package model.race.races;
+package model.race.descriptions;
 
-import model.actions.Attack;
-import model.actions.Disease;
+import model.action.actions.Attack;
+import model.action.actions.Disease;
 import model.race.Race;
 
 /**

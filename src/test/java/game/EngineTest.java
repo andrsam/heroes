@@ -1,12 +1,12 @@
 package game;
 
 import model.Squad;
-import model.actions.Attack;
-import model.actions.Disease;
-import model.race.races.Elves;
-import model.race.races.Humans;
-import model.race.races.Orcs;
-import model.race.races.Undead;
+import model.action.actions.Attack;
+import model.action.actions.Disease;
+import model.race.descriptions.Elves;
+import model.race.descriptions.Humans;
+import model.race.descriptions.Orcs;
+import model.race.descriptions.Undead;
 import model.unit.Unit;
 import org.junit.Test;
 
@@ -14,19 +14,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 /**
  * Тесты игрового движка.
  */
 public class EngineTest {
+    /**
+     * Позиция в отряде, на которой находится воин
+     */
     private static final int WARRIOR_POSITION = 4;
+
     private static final int MAGE_POSITION = 0;
 
     private Engine engineMock = mock(Engine.class, withSettings().useConstructor().defaultAnswer(CALLS_REAL_METHODS));
-
-    private Squad squadGood;
-    private Squad squadEvil;
 
     {
         doCallRealMethod().when(engineMock).makeTurn();
