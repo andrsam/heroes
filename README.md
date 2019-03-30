@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/andrsam/heroes.svg?branch=master)](https://travis-ci.org/andrsam/heroes)
+[![codecov](https://codecov.io/gh/andrsam/heroes/branch/master/graph/badge.svg)](https://codecov.io/gh/andrsam/heroes)
 # Герои
 
 **Прототип игры-консольного приложения на языке Java**
