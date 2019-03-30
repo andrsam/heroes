@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * (логирование, наложение и снятие улучшения)
  */
 public class ActionProxy {
-    private static final Logger log = LoggerFactory.getLogger(ActionProxy.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ActionProxy.class);
 
     public ActionProxy(Action action, Unit srcUnit, Unit dstUnit) {
         this.action = action;
@@ -50,14 +50,14 @@ public class ActionProxy {
             ((Attack) action).setImprovementRate(magic.getImprovementRate());
         }
 
-        log.info("{} {} {}", srcUnit.getName(), action.getName(), dstUnit.getNameGenitive());
+        LOG.info("{} {} {}", srcUnit.getName(), action.getName(), dstUnit.getNameGenitive());
 
         action.execute(dstUnit);
 
         if (dstUnit.getMagic() != null) {
-            log.info("{} здоровье: {} магия: {}", dstUnit.getName(), dstUnit.getHealth(), dstUnit.getMagic().getName());
+            LOG.info("{} здоровье: {} магия: {}", dstUnit.getName(), dstUnit.getHealth(), dstUnit.getMagic().getName());
         } else {
-            log.info("{} здоровье: {}", dstUnit.getName(), dstUnit.getHealth());
+            LOG.info("{} здоровье: {}", dstUnit.getName(), dstUnit.getHealth());
         }
 
         //Снимаем улучшение(проклятие) с персонажа

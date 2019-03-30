@@ -64,8 +64,6 @@ public class Race {
 
     @Override
     public String toString() {
-        return "Race{" +
-                "name='" + name + '\'' +
-                '}';
+        return "Race{" + "name='" + name + '\'' + '}';
     }
 }

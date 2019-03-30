@@ -18,7 +18,7 @@ import java.util.Random;
  * Игровой движок.
  */
 public class Engine {
-    private static final Logger log = LoggerFactory.getLogger(Engine.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Engine.class);
 
     private final Squad squadGood;
     private final Squad squadEvil;
@@ -51,7 +51,7 @@ public class Engine {
      * Выполняет игровой ход.
      */
     public void makeTurn() {
-        log.info("Ход №" + turnNumber + "-----------------------------------------------------------------");
+        LOG.info("Ход №" + turnNumber + "-----------------------------------------------------------------");
         Unit[] units = getActiveUnits();
 
         Unit dstUnit = units[1];
@@ -87,9 +87,9 @@ public class Engine {
         Unit dstUnit = squads[dst].getRandomUnit();
 
         if (isImprovement) {
-            log.info("Раса {} применила улучшение", squads[src].getRaceName());
+            LOG.info("Раса {} применила улучшение", squads[src].getRaceName());
         } else {
-            log.info("{} атакуют {}", squads[src].getRaceName(), squads[dst].getRaceNameGenitive());
+            LOG.info("{} атакуют {}", squads[src].getRaceName(), squads[dst].getRaceNameGenitive());
         }
         return new Unit[]{srcUnit, dstUnit};
     }

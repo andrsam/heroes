@@ -12,14 +12,14 @@ import java.util.Scanner;
  */
 public class Game {
     private final Engine engine = new Engine();
-    private static final Logger log = LoggerFactory.getLogger(Game.class);
+    private static final Logger LOG = LoggerFactory.getLogger(Game.class);
 
     /**
      * Выводит заставку и информацию об игроках.
      */
     public void showInfo() {
         drawIntro();
-        log.info("Играют {} против {}", engine.getSquadGood().getRaceName(), engine.getSquadEvil().getRaceNameGenitive());
+        LOG.info("Играют {} против {}", engine.getSquadGood().getRaceName(), engine.getSquadEvil().getRaceNameGenitive());
         System.out.println("-----------------------------------------------------------------");
         System.out.println("Enter - следующий ход, x - закончить игру: ");
     }

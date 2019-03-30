@@ -108,11 +108,11 @@ public class Squad {
 
     @Override
     public String toString() {
-        return "Squad{" +
-                ", MAGE_COUNT=" + MAGE_COUNT +
-                ", SHOOTER_COUNT=" + SHOOTER_COUNT +
-                ", WARRIOR_COUNT=" + WARRIOR_COUNT +
-                ", race=" + race +
-                '}';
+        return "Squad{"
+                + ", MAGE_COUNT=" + MAGE_COUNT
+                + ", SHOOTER_COUNT=" + SHOOTER_COUNT
+                + ", WARRIOR_COUNT=" + WARRIOR_COUNT
+                + ", race=" + race
+                + '}';
     }
 }
