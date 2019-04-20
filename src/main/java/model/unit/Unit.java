@@ -170,11 +170,14 @@ public class Unit {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Unit unit = (Unit) o;
-        return unitType == unit.unitType &&
-                name.equals(unit.name);
+        return unitType == unit.unitType && name.equals(unit.name);
     }
 
     @Override
