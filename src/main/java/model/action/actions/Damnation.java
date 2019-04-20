@@ -17,18 +17,28 @@ public class Damnation implements Action {
      */
     private String name;
 
+    public Damnation(String name) {
+        this.name = name;
+    }
+
     @Override
     public float getImprovementRate() {
         return IMPROVEMENT_RATE;
     }
 
+    /**
+     * Признак, является ли действие изменением характеристик персонажа
+     *
+     * @return
+     */
+    @Override
+    public boolean isActionChangesState() {
+        return true;
+    }
+
     @Override
     public String getName() {
         return name;
-    }
-
-    public Damnation(String name) {
-        this.name = name;
     }
 
     @Override

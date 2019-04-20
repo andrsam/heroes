@@ -17,6 +17,10 @@ public class Disease implements Action {
      */
     private String name;
 
+    public Disease(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getName() {
         return name;
@@ -27,8 +31,9 @@ public class Disease implements Action {
         return IMPROVEMENT_RATE;
     }
 
-    public Disease(String name) {
-        this.name = name;
+    @Override
+    public boolean isActionChangesState() {
+        return true;
     }
 
     @Override

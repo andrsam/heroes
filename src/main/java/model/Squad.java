@@ -42,7 +42,7 @@ public class Squad {
         return units;
     }
 
-    public final Race getRace() {
+    public Race getRace() {
         return race;
     }
 

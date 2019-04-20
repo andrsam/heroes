@@ -14,12 +14,6 @@ import org.slf4j.LoggerFactory;
 public class ActionProxy {
     private static final Logger LOG = LoggerFactory.getLogger(ActionProxy.class);
 
-    public ActionProxy(Action action, Unit srcUnit, Unit dstUnit) {
-        this.action = action;
-        this.srcUnit = srcUnit;
-        this.dstUnit = dstUnit;
-    }
-
     /**
      * Действие
      */
@@ -34,6 +28,12 @@ public class ActionProxy {
      * Юнит назначения
      */
     private Unit dstUnit;
+
+    public ActionProxy(Action action, Unit srcUnit, Unit dstUnit) {
+        this.action = action;
+        this.srcUnit = srcUnit;
+        this.dstUnit = dstUnit;
+    }
 
     /**
      * Запуск действия

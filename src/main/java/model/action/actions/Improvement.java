@@ -7,7 +7,6 @@ import model.unit.Unit;
  * Переводит персонаж в привелигированную группу.
  */
 public class Improvement implements Action {
-
     /**
      * Наносимый урон увеличивается в 1.5 раза
      */
@@ -23,8 +22,8 @@ public class Improvement implements Action {
     }
 
     @Override
-    public void execute(Unit unit) {
-        unit.setImprovement(this);
+    public float getImprovementRate() {
+        return IMPROVEMENT_RATE;
     }
 
     @Override
@@ -33,7 +32,14 @@ public class Improvement implements Action {
     }
 
     @Override
-    public float getImprovementRate() {
-        return IMPROVEMENT_RATE;
+    public boolean isActionChangesState() {
+        return true;
     }
+
+    @Override
+    public void execute(Unit unit) {
+        unit.setImprovement(this);
+    }
+
+
 }

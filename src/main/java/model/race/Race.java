@@ -19,6 +19,21 @@ public class Race {
      */
     private String nameGenitive;
 
+    /**
+     * Маг.
+     */
+    protected final Unit mage = new Unit(UnitType.MAGE);
+
+    /**
+     * Лучник.
+     */
+    protected final Unit shooter = new Unit(UnitType.SHOOTER);
+
+    /**
+     * Воин.
+     */
+    protected final Unit warrior = new Unit(UnitType.WARRIOR);
+
     public String getName() {
         return name;
     }
@@ -34,21 +49,6 @@ public class Race {
     public void setNameGenitive(String nameGenitive) {
         this.nameGenitive = nameGenitive;
     }
-
-    /**
-     * Маг.
-     */
-    protected final Unit mage = new Unit(UnitType.MAGE);
-
-    /**
-     * Лучник.
-     */
-    protected final Unit shooter = new Unit(UnitType.SHOOTER);
-
-    /**
-     * Воин.
-     */
-    protected final Unit warrior = new Unit(UnitType.WARRIOR);
 
     public Unit getMage() {
         return mage;

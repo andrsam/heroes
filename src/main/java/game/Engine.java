@@ -1,13 +1,8 @@
 package game;
 
 import model.Squad;
-import model.action.actions.Improvement;
 import model.race.Race;
 import model.race.RaceType;
-import model.race.descriptions.Elves;
-import model.race.descriptions.Humans;
-import model.race.descriptions.Orcs;
-import model.race.descriptions.Undead;
 import model.unit.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +15,31 @@ import java.util.Random;
 public class Engine {
     private static final Logger LOG = LoggerFactory.getLogger(Engine.class);
 
+    /**
+     * Отряд положительеных героев - эльфов или людей
+     */
     private final Squad squadGood;
+
+    /**
+     * Отряд отрицательных героев - орков или нежити
+     */
     private final Squad squadEvil;
+
     private final Random random = new Random();
 
+    /**
+     * Атакующий юнит
+     */
+    private Unit comrade;
+
+    /**
+     * Атакуемый юнит
+     */
+    private Unit enemy;
+
+    /**
+     * Счетчик количества ходов
+     */
     private int turnNumber = 1;
 
     public Engine() {
@@ -31,10 +47,28 @@ public class Engine {
         squadEvil = new Squad(getRandomRace(RaceType.EVIL));
     }
 
+    public void setComrade(Unit comrade) {
+        this.comrade = comrade;
+    }
+
+    public void setEnemy(Unit enemy) {
+        this.enemy = enemy;
+    }
+
+    /**
+     * Возвращает отряд положительных героев
+     *
+     * @return объект типа Squad
+     */
     public Squad getSquadGood() {
         return squadGood;
     }
 
+    /**
+     * Возвращает отряд отрицательных героев
+     *
+     * @return объект типа Squad
+     */
     public Squad getSquadEvil() {
         return squadEvil;
     }
@@ -43,7 +77,7 @@ public class Engine {
      * Возвращает случайным образом выбранную расу.
      */
     private Race getRandomRace(RaceType raceType) {
-        Race[] races = raceType.equals(RaceType.GOOD) ? new Race[]{new Elves(), new Humans()} : new Race[]{new Orcs(), new Undead()};
+        Race[] races = raceType.getRaces();
         return races[random.nextInt(2)];
     }
 
@@ -51,14 +85,9 @@ public class Engine {
      * Выполняет игровой ход.
      */
     public void makeTurn() {
-        LOG.info("Ход №" + turnNumber + "-----------------------------------------------------------------");
-        Unit[] units = getActiveUnits();
-
-        Unit dstUnit = units[1];
-        Unit srcUnit = units[0];
-
-        srcUnit.executeAction(dstUnit);
-
+        LOG.info("Ход № {} -----------------------------------------------------------------", turnNumber);
+        setActiveUnits();
+        comrade.executeAction(enemy);
         removeDeathUnits();
         turnNumber++;
     }
@@ -69,29 +98,27 @@ public class Engine {
      *
      * @return массив [атакующий юнит, атакуемый юнит]
      */
-    protected Unit[] getActiveUnits() {
-
+    protected void setActiveUnits() {
         Squad[] squads = new Squad[]{squadGood, squadEvil};
 
         int src = random.nextInt(2);
-        Unit srcUnit = squads[src].getActiveUnit();
+        comrade = squads[src].getActiveUnit();
+
+        boolean isImprovement = comrade.getCurrentAction().isActionChangesState();
 
         /*
          *  выбираем отряд назначения.
          *  это своя раса, если выбрано улучшение,
          *  иначе - раса противника
          */
-        boolean isImprovement = srcUnit.getCurrentAction() instanceof Improvement;
-
         int dst = isImprovement ? src : src ^ 1;
-        Unit dstUnit = squads[dst].getRandomUnit();
+        enemy = squads[dst].getRandomUnit();
 
         if (isImprovement) {
             LOG.info("Раса {} применила улучшение", squads[src].getRaceName());
         } else {
             LOG.info("{} атакуют {}", squads[src].getRaceName(), squads[dst].getRaceNameGenitive());
         }
-        return new Unit[]{srcUnit, dstUnit};
     }
 
     /**

@@ -4,10 +4,7 @@ import model.action.Action;
 import model.action.ActionProxy;
 import model.action.actions.Improvement;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Класс-описание персонажа.
@@ -169,5 +166,19 @@ public class Unit {
      */
     public boolean isPrivileged() {
         return magic != null && magic.getClass() == Improvement.class;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Unit unit = (Unit) o;
+        return unitType == unit.unitType &&
+                name.equals(unit.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(unitType, name);
     }
 }

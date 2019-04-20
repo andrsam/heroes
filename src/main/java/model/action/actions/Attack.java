@@ -7,7 +7,6 @@ import model.unit.Unit;
  * Действие-атака.
  */
 public class Attack implements Action {
-
     /**
      * Величина наносимого урона.
      */
@@ -22,7 +21,6 @@ public class Attack implements Action {
      * Наименование действия
      */
     private final String name;
-
 
     public Attack(String name, int damage) {
         this.name = name;
@@ -39,6 +37,10 @@ public class Attack implements Action {
         return improvementRate;
     }
 
+    public void setImprovementRate(float improvementRate) {
+        this.improvementRate = improvementRate;
+    }
+
     public int getDamage() {
         return damage;
     }
@@ -47,8 +49,9 @@ public class Attack implements Action {
         this.damage = damage;
     }
 
-    public void setImprovementRate(float improvementRate) {
-        this.improvementRate = improvementRate;
+    @Override
+    public boolean isActionChangesState() {
+        return false;
     }
 
     @Override

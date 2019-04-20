@@ -27,4 +27,11 @@ public interface Action {
      * @return коэффициент
      */
     float getImprovementRate();
+
+    /**
+     * Возвращает признак, является ли действие изменением характеристик персонажа
+     *
+     * @return
+     */
+    boolean isActionChangesState();
 }
