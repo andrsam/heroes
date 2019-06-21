@@ -7,7 +7,10 @@ import model.unit.Unit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * Игровой движок.
@@ -16,16 +19,21 @@ public class Engine {
     private static final Logger LOG = LoggerFactory.getLogger(Engine.class);
 
     /**
-     * Отряд положительеных героев - эльфов или людей
+     * Количество
      */
-    private final Squad squadGood;
-
-    /**
-     * Отряд отрицательных героев - орков или нежити
-     */
-    private final Squad squadEvil;
+    public static final int SQUADS_NUMBER = 3;
 
     private final Random random = new Random();
+
+    /**
+     * Стек, определяющий порядок ходов в игре
+     */
+    private final Deque<Squad> stack = new ArrayDeque<>();
+
+    /**
+     * Выбранные атакующие отряды
+     */
+    private final Squad[] activeSquads = new Squad[2];
 
     /**
      * Атакующий юнит
@@ -43,8 +51,7 @@ public class Engine {
     private int turnNumber = 1;
 
     public Engine() {
-        squadGood = new Squad(getRandomRace(RaceType.GOOD));
-        squadEvil = new Squad(getRandomRace(RaceType.EVIL));
+        defineSquads();
     }
 
     public void setComrade(Unit comrade) {
@@ -55,22 +62,40 @@ public class Engine {
         this.enemy = enemy;
     }
 
-    /**
-     * Возвращает отряд положительных героев
-     *
-     * @return объект типа Squad
-     */
-    public Squad getSquadGood() {
-        return squadGood;
+    public boolean isAllUnitsDead() {
+        return stack.isEmpty();
     }
 
     /**
-     * Возвращает отряд отрицательных героев
-     *
-     * @return объект типа Squad
+     * Создаёт отряды-участники и инициализирует стек
      */
-    public Squad getSquadEvil() {
-        return squadEvil;
+    private void defineSquads() {
+        RaceType raceType;
+        for (int i = 0; i < SQUADS_NUMBER; i++) {
+            raceType = random.nextBoolean() ? RaceType.GOOD : RaceType.EVIL;
+            Squad squad = new Squad(getRandomRace(raceType));
+            stack.push(squad);
+        }
+    }
+
+    /**
+     * Получает из стека атакующий и атакуемый отряды
+     */
+    private void prepareSquads() {
+        activeSquads[0] = stack.pop();
+        activeSquads[1] = stack.pop();
+        LOG.info("Играют {} против {}", activeSquads[0].getRaceName(), activeSquads[1].getRaceNameGenitive());
+    }
+
+    public Squad[] getActiveSquads() {
+        return activeSquads;
+    }
+
+    /**
+     * Выводит отряды играющих рас
+     */
+    public void printSquadsRaces() {
+        System.out.println("Играют отряды: " + stack.stream().map(Squad::getRaceName).collect(Collectors.joining(", ")));
     }
 
     /**
@@ -85,24 +110,21 @@ public class Engine {
      * Выполняет игровой ход.
      */
     public void makeTurn() {
+        prepareSquads();
         LOG.info("Ход № {} -----------------------------------------------------------------", turnNumber);
         setActiveUnits();
         comrade.executeAction(enemy);
-        removeDeathUnits();
+        postProcessSquads();
         turnNumber++;
     }
 
     /**
-     * Возвращает массив из атакующего юнита и атакуемого юнита
+     * Инициализирует атакующий и атакуемый юнит
      * для выполнения хода
-     *
-     * @return массив [атакующий юнит, атакуемый юнит]
      */
     protected void setActiveUnits() {
-        Squad[] squads = new Squad[]{squadGood, squadEvil};
-
         int src = random.nextInt(2);
-        comrade = squads[src].getActiveUnit();
+        comrade = activeSquads[src].getActiveUnit();
 
         boolean isImprovement = comrade.getCurrentAction().isActionChangesState();
 
@@ -112,20 +134,28 @@ public class Engine {
          *  иначе - раса противника
          */
         int dst = isImprovement ? src : src ^ 1;
-        enemy = squads[dst].getRandomUnit();
+        enemy = activeSquads[dst].getRandomUnit();
 
         if (isImprovement) {
-            LOG.info("Раса {} применила улучшение", squads[src].getRaceName());
+            LOG.info("Раса {} применила улучшение", activeSquads[src].getRaceName());
         } else {
-            LOG.info("{} атакуют {}", squads[src].getRaceName(), squads[dst].getRaceNameGenitive());
+            LOG.info("{} атакуют {}", activeSquads[src].getRaceName(), activeSquads[dst].getRaceNameGenitive());
         }
     }
 
     /**
      * Удаляет юниты из отрядов, чей показатель здоровья равен нулю.
      */
-    private void removeDeathUnits() {
-        squadGood.removeDeathUnits();
-        squadEvil.removeDeathUnits();
+    private void postProcessSquads() {
+        for (int i = 0; i < activeSquads.length; i++) {
+            Squad activeSquad = activeSquads[i];
+            activeSquad.removeDeathUnits();
+
+            if (activeSquad.getUnits().size() > 0) {
+                stack.add(activeSquad);
+            }
+        }
+
+
     }
 }

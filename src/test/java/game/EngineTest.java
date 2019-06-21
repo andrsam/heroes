@@ -4,14 +4,11 @@ import model.Squad;
 import model.action.actions.Attack;
 import model.action.actions.Disease;
 import model.race.descriptions.Elves;
-import model.race.descriptions.Humans;
 import model.race.descriptions.Orcs;
 import model.race.descriptions.Undead;
 import model.unit.Unit;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -33,16 +30,6 @@ public class EngineTest {
 
     {
         doCallRealMethod().when(engineMock).makeTurn();
-    }
-
-    /**
-     * Тест создания отрядов.
-     */
-    @Test
-    public void createSquads() {
-        Engine engine = new Engine();
-        assertThat(engine.getSquadGood().getRace().getClass(), isOneOf(Elves.class, Humans.class));
-        assertThat(engine.getSquadEvil().getRace().getClass(), isOneOf(Orcs.class, Undead.class));
     }
 
     /**
@@ -183,8 +170,8 @@ public class EngineTest {
      */
     @Test
     public void testDeath() {
-        Squad squadGood = engineMock.getSquadGood();
-        Squad squadEvil = engineMock.getSquadEvil();
+        Squad squadGood = engineMock.getActiveSquads()[0];
+        Squad squadEvil = engineMock.getActiveSquads()[1];
 
         Unit goodWarrior = squadGood.getUnits().get(WARRIOR_POSITION);
 

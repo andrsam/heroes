@@ -19,7 +19,7 @@ public class Game {
      */
     public void showInfo() {
         drawIntro();
-        LOG.info("Играют {} против {}", engine.getSquadGood().getRaceName(), engine.getSquadEvil().getRaceNameGenitive());
+        engine.printSquadsRaces();
         System.out.println("-----------------------------------------------------------------");
         System.out.println("Enter - следующий ход, x - закончить игру: ");
     }
@@ -58,6 +58,9 @@ public class Game {
      * Игровой цикл.
      */
     private void loop() {
+        if (engine.isAllUnitsDead()) {
+            System.out.println("Игра окончена");
+        }
         Scanner scanner = new Scanner(System.in);
         while (!scanner.nextLine().equals("x")) {
             engine.makeTurn();

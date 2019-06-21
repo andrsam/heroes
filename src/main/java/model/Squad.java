@@ -5,6 +5,7 @@ import model.unit.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -104,6 +105,20 @@ public class Squad {
      */
     public String getRaceNameGenitive() {
         return this.getRace().getNameGenitive();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Squad squad = (Squad) o;
+        return units.equals(squad.units) &&
+                race.equals(squad.race);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(units, race);
     }
 
     @Override
