@@ -112,17 +112,15 @@ public class Engine {
     public void makeTurn() {
         prepareSquads();
         LOG.info("Ход № {} -----------------------------------------------------------------", turnNumber);
-        setActiveUnits();
-        comrade.executeAction(enemy);
+        doAttack();
         postProcessSquads();
         turnNumber++;
     }
 
     /**
-     * Инициализирует атакующий и атакуемый юнит
-     * для выполнения хода
+     * Инициализирует атакующий и атакуемый юнит, после чего выполняет атаку
      */
-    protected void setActiveUnits() {
+    protected void doAttack() {
         int src = random.nextInt(2);
         comrade = activeSquads[src].getActiveUnit();
 
@@ -141,6 +139,7 @@ public class Engine {
         } else {
             LOG.info("{} атакуют {}", activeSquads[src].getRaceName(), activeSquads[dst].getRaceNameGenitive());
         }
+        comrade.executeAction(enemy);
     }
 
     /**

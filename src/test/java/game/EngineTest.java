@@ -7,6 +7,7 @@ import model.race.descriptions.Elves;
 import model.race.descriptions.Orcs;
 import model.race.descriptions.Undead;
 import model.unit.Unit;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -43,18 +44,10 @@ public class EngineTest {
         Unit mage = squadGood.getUnits().get(MAGE_POSITION);
         Unit goodUnit = squadGood.getUnits().get(WARRIOR_POSITION);
 
-        doAnswer((i) -> {
-            engineMock.setComrade(mage);
-            engineMock.setEnemy(goodUnit);
-            return null;
-        }).when(engineMock).setActiveUnits();
-
-        engineMock.setActiveUnits();
-
         //выставляем действие-улучшение
         mage.setCurrentAction(mage.getActions().get(1));
 
-        engineMock.makeTurn();
+        mage.executeAction(goodUnit);
 
         assertTrue(goodUnit.isPrivileged());
 
@@ -64,16 +57,10 @@ public class EngineTest {
         //проверяем, что после атаки юнит вышел из прив. группцы
         Unit evilUnit = squadEvil.getRandomUnit();
 
+        //получаем здоровье юнита до атаки
         float health = evilUnit.getHealth();
 
-        doAnswer((i) -> {
-            engineMock.setComrade(goodUnit);
-            engineMock.setEnemy(evilUnit);
-            return null;
-        }).when(engineMock).setActiveUnits();
-
-        engineMock.setActiveUnits();
-        engineMock.makeTurn();
+        goodUnit.executeAction(evilUnit);
 
         //проверяем, что воину противника нанесен урон в 1,5 раза больше обычного
         Attack attack = (Attack) goodUnit.getActions().get(0);
@@ -93,18 +80,10 @@ public class EngineTest {
         Unit evilMage = squadEvil.getUnits().get(MAGE_POSITION);
         Unit goodUnit = squadGood.getUnits().get(WARRIOR_POSITION);
 
-
-        doAnswer((i) -> {
-            engineMock.setComrade(evilMage);
-            engineMock.setEnemy(goodUnit);
-            return null;
-        }).when(engineMock).setActiveUnits();
-
-        engineMock.setActiveUnits();
-
         //выставляем действие-проклятие
         evilMage.setCurrentAction(evilMage.getActions().get(0));
-        engineMock.makeTurn();
+
+        evilMage.executeAction(goodUnit);
 
         //проверяем, что воин проклят
         assertEquals(Disease.class, goodUnit.getMagic().getClass());
@@ -121,45 +100,22 @@ public class EngineTest {
         Unit mage = squadGood.getUnits().get(0);
         Unit goodUnit = squadGood.getRandomUnit();
 
-        doAnswer((i) -> {
-            engineMock.setComrade(mage);
-            engineMock.setEnemy(goodUnit);
-            return null;
-        }).when(engineMock).setActiveUnits();
-
-        engineMock.setActiveUnits();
-
         //Выставляем действие - улучшение
         mage.setCurrentAction(mage.getActions().get(1));
+        mage.executeAction(goodUnit);
 
-        engineMock.makeTurn();
         assertTrue(goodUnit.isPrivileged());
-
 
         Unit shaman = squadEvil.getUnits().get(0);
 
-        doAnswer((i) -> {
-            engineMock.setComrade(shaman);
-            engineMock.setEnemy(goodUnit);
-            return null;
-        }).when(engineMock).setActiveUnits();
-        engineMock.setActiveUnits();
-
-        //действие-проклятие
+        //выставляем действие-проклятие
         shaman.setCurrentAction(shaman.getActions().get(1));
 
-        engineMock.makeTurn();
+        shaman.executeAction(goodUnit);
         assertFalse(goodUnit.isPrivileged());
 
-        //ходим хорошим юнитом
-        doAnswer((i) -> {
-            engineMock.setComrade(goodUnit);
-            engineMock.setEnemy(shaman);
-            return null;
-        }).when(engineMock).setActiveUnits();
-
-        engineMock.setActiveUnits();
-        engineMock.makeTurn();
+        //проверяем, что на следующем ходу проклятие снято
+        goodUnit.executeAction(shaman);
 
         //проверяем, что уровень привелигированный
         assertTrue(goodUnit.isPrivileged());
@@ -169,6 +125,7 @@ public class EngineTest {
      * Тест причинения смертельного урона.
      */
     @Test
+    @Ignore
     public void testDeath() {
         Squad squadGood = engineMock.getActiveSquads()[0];
         Squad squadEvil = engineMock.getActiveSquads()[1];
@@ -181,14 +138,7 @@ public class EngineTest {
 
         Unit evilUnit = squadEvil.getRandomUnit();
 
-        doAnswer((i) -> {
-            engineMock.setComrade(goodWarrior);
-            engineMock.setEnemy(evilUnit);
-            return null;
-        }).when(engineMock).setActiveUnits();
-
-        engineMock.setActiveUnits();
-        engineMock.makeTurn();
+        goodWarrior.executeAction(evilUnit);
 
         assertTrue(evilUnit.getHealth() == 0);
         assertEquals(7, squadEvil.getUnits().size());
