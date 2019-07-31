@@ -109,11 +109,17 @@ public class Squad {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         Squad squad = (Squad) o;
-        return units.equals(squad.units) &&
-                race.equals(squad.race);
+        return units.equals(squad.units)
+                && race.equals(squad.race);
     }
 
     @Override
