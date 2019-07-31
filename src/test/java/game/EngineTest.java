@@ -7,7 +7,6 @@ import model.race.descriptions.Elves;
 import model.race.descriptions.Orcs;
 import model.race.descriptions.Undead;
 import model.unit.Unit;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -119,28 +118,5 @@ public class EngineTest {
 
         //проверяем, что уровень привелигированный
         assertTrue(goodUnit.isPrivileged());
-    }
-
-    /**
-     * Тест причинения смертельного урона.
-     */
-    @Test
-    @Ignore
-    public void testDeath() {
-        Squad squadGood = engineMock.getActiveSquads()[0];
-        Squad squadEvil = engineMock.getActiveSquads()[1];
-
-        Unit goodWarrior = squadGood.getUnits().get(WARRIOR_POSITION);
-
-        //выставляем уровень урона от атаки = 100
-        Attack attack = (Attack) goodWarrior.getActions().get(0);
-        attack.setDamage(100);
-
-        Unit evilUnit = squadEvil.getRandomUnit();
-
-        goodWarrior.executeAction(evilUnit);
-
-        assertTrue(evilUnit.getHealth() == 0);
-        assertEquals(7, squadEvil.getUnits().size());
     }
 }

@@ -17,13 +17,13 @@ import java.util.stream.Collectors;
  */
 public class Engine {
     private static final Logger LOG = LoggerFactory.getLogger(Engine.class);
+    private final Random random = new Random();
 
     /**
      * Количество
      */
     public static final int SQUADS_NUMBER = 3;
 
-    private final Random random = new Random();
 
     /**
      * Стек, определяющий порядок ходов в игре
@@ -35,31 +35,9 @@ public class Engine {
      */
     private final Squad[] activeSquads = new Squad[2];
 
-    /**
-     * Атакующий юнит
-     */
-    private Unit comrade;
-
-    /**
-     * Атакуемый юнит
-     */
-    private Unit enemy;
-
-    /**
-     * Счетчик количества ходов
-     */
-    private int turnNumber = 1;
 
     public Engine() {
         defineSquads();
-    }
-
-    public void setComrade(Unit comrade) {
-        this.comrade = comrade;
-    }
-
-    public void setEnemy(Unit enemy) {
-        this.enemy = enemy;
     }
 
     public boolean isAllUnitsDead() {
@@ -87,10 +65,6 @@ public class Engine {
         LOG.info("Играют {} против {}", activeSquads[0].getRaceName(), activeSquads[1].getRaceNameGenitive());
     }
 
-    public Squad[] getActiveSquads() {
-        return activeSquads;
-    }
-
     /**
      * Выводит отряды играющих рас
      */
@@ -110,6 +84,7 @@ public class Engine {
      * Выполняет игровой ход.
      */
     public void makeTurn() {
+        int turnNumber = 1;
         prepareSquads();
         LOG.info("Ход № {} -----------------------------------------------------------------", turnNumber);
         doAttack();
@@ -121,6 +96,8 @@ public class Engine {
      * Инициализирует атакующий и атакуемый юнит, после чего выполняет атаку
      */
     protected void doAttack() {
+        Unit comrade, enemy;
+
         int src = random.nextInt(2);
         comrade = activeSquads[src].getActiveUnit();
 
